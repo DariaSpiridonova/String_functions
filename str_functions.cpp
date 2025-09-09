@@ -162,6 +162,8 @@ void test_my_getline()
         printf("my_getline success\n");
     else
         printf("my_getline fail, expected num_of_items_read = 18, get num_of_items_read = %d\n", num_of_items_read);
+
+    fclose(fp);
 }
 
 char *my_fgets(char *arr, const int n, FILE *fp)
