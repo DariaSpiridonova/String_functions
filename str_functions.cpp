@@ -208,10 +208,11 @@ char *my_strchr(const char *str, int ch)
         if (*str == (char)ch)
         {
             symbol = str;
-            break;
+            return (char *)symbol;
         }
         str++;
     }
+    if (ch == '\0') return (char *)str;
 
     return (char *)symbol;
 }
