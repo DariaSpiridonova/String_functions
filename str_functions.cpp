@@ -229,7 +229,7 @@ char *my_strcpy(char *dest, const char *src)
 {
     return my_strncpy(dest, src, __SIZE_MAX__);
 }
- 
+
 char *my_strncpy(char *dest, const char *src, size_t count)
 {
     assert(dest != NULL && src != NULL);

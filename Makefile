@@ -12,7 +12,7 @@ all: str_functions.exe
 
 str_functions.exe: $(OBJECTS)
 	$(CXX) $^ -o $@
- 
+
 .PHONY: clean
 
 clean:
