@@ -296,26 +296,10 @@ char *my_strncat(char *dest, const char *src, size_t count)
 
 char *my_strdup(const char *str1)
 {
-    int n = STLEN;
+    size_t n = (my_strlen(str1) + 1)*sizeof(char); 
     char *str_copy = (char *)malloc(n);
 
-    char ch = 0;
-    int i = 0, count = 0;
-    while ((ch = str1[i]) != '\0')
-    {
-        if (i < n)
-        {
-            str_copy[i] = ch;
-            i++;
-            count++;
-        }
-        if (i == n)
-        {
-            str_copy = (char *)realloc(str_copy, n * 2);
-            n *= 2;
-        }
-    }
-    str_copy[i] = '\0';
+    my_strcpy(str_copy, str1);
 
     return str_copy;
 }
@@ -359,12 +343,12 @@ char *my_strstr(const char *str, const char *substr)
 {
     assert(str != NULL);
 
-    if (substr == "")
+    if (*substr == '\0')
         return (char *)str;
     if (substr == NULL)
         return NULL;
 
-    char *ptr = NULL;
+    const char *ptr = NULL;
     char ch1 = *str;
     char ch2 = *substr;
 
@@ -375,17 +359,17 @@ char *my_strstr(const char *str, const char *substr)
             ch1 = *(++str);
             continue;
         }
-        ptr = (char *)str;
-        int i = 0;
+        ptr = str;
         ch2 = *substr;
-
+        
+        int i = 0;
         while (ch1 == ch2 && ch1 != '\0')
         {
             ch1 = *(++str);
             ch2 = substr[++i];
         }
 
-        if (ch2 == '\0') return ptr;
+        if (ch2 == '\0') return (char *)ptr;
     }
 
     return NULL;
