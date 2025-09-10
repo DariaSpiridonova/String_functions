@@ -16,6 +16,8 @@ char *my_strcat(char *dest, const char *src);
 char *my_strncat(char *dest, const char *src, size_t count);
 char *my_strdup(const char *str1);
 ssize_t my_getline(char **lineptr, size_t *n, FILE *stream);
+char *my_strstr(const char *str, const char *substr);
+
 void test_my_fgets();
 void test_my_puts();
 void test_my_strchr();
@@ -26,6 +28,7 @@ void test_my_strcat();
 void test_my_strncat();
 void test_my_strdup();
 void test_my_getline();
+void test_my_strstr();
 
 int main()
 {
@@ -39,6 +42,7 @@ int main()
     test_my_strncat();
     test_my_strdup();
     test_my_getline();
+    test_my_strstr();
 
     return 0;
 }
@@ -166,6 +170,25 @@ void test_my_getline()
     fclose(fp);
 }
 
+void test_my_strstr()
+{
+    const char *str = "We like cats so much, but dogs are so cute!";
+    const char *part_of_str1 = "cats";
+    const char *part_of_str2 = "laugh";
+    const char *part_of_str3 = "";
+
+    char *ptr1 = my_strchr(str, 'c');
+    char *ptr2 = NULL;
+    char *ptr3 = (char *)str;
+
+    if (my_strstr(str, part_of_str1) == ptr1 && my_strstr(str, part_of_str2) == ptr2 && my_strstr(str, part_of_str3) == ptr3)
+        printf("my_strstr success");
+    else {
+        printf("my_strstr fail, expected <ptr1> = <cats so much, but dogs are so cute!>, <ptr2> = <NULL>, <ptr3> = <We like cats so much, but dogs are so cute!>, \n");
+        printf("get <ptr1> = <%s>, <ptr2> = <%s>, <ptr3> = <%s>\n", my_strstr(str, part_of_str1), my_strstr(str, part_of_str2), my_strstr(str, part_of_str3));
+    }
+}
+
 char *my_fgets(char *arr, const int n, FILE *fp)
 {
     unsigned char ch = (unsigned char)fgetc(fp);
@@ -212,7 +235,8 @@ char *my_strchr(const char *str, int ch)
         }
         str++;
     }
-    if (ch == '\0') return (char *)str;
+    if (ch == '\0')
+        return (char *)str;
 
     return (char *)symbol;
 }
@@ -329,4 +353,40 @@ ssize_t my_getline(char **lineptr, size_t *n, FILE *stream)
     *n = count;
 
     return *n;
+}
+
+char *my_strstr(const char *str, const char *substr)
+{
+    assert(str != NULL);
+
+    if (substr == "")
+        return (char *)str;
+    if (substr == NULL)
+        return NULL;
+
+    char *ptr = NULL;
+    char ch1 = *str;
+    char ch2 = *substr;
+
+    while (ch1 != '\0')
+    {
+        if (ch1 != ch2)
+        {
+            ch1 = *(++str);
+            continue;
+        }
+        ptr = (char *)str;
+        int i = 0;
+        ch2 = *substr;
+
+        while (ch1 == ch2 && ch1 != '\0')
+        {
+            ch1 = *(++str);
+            ch2 = substr[++i];
+        }
+
+        if (ch2 == '\0') return ptr;
+    }
+
+    return NULL;
 }
